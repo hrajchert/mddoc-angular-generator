@@ -60,7 +60,7 @@
     </div>
     <div class="footer">
         <div class="container">
-            <p class="text-muted">Place sticky footer content here.</p>
+            <p class="text-muted">Documentation created using <a href="https://github.com/hrajchert/mddoc">mddoc</a> with the <a href="https://github.com/hrajchert/mddoc-angular-generator">angular generator</a>.</p>
         </div>
     </div>
         <script src="/js/vendor/lib.js"></script>
