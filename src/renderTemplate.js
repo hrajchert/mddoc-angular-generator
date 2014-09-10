@@ -20,7 +20,7 @@ util.inherits(renderTemplate, Transform);
 
 renderTemplate.prototype._transform = function (file, unused, cb) {
 
-    var html = this.renderer.render(file.path, {documentor: this.helpers, links:['1','2','3']});
+    var html = this.renderer.render(file.path, {documentor: this.helpers});
     file.contents = new Buffer(html);
 
     file.path = path.normalize(path.dirname(file.path) + path.sep + path.basename(file.path, '.tpl') + '.html');

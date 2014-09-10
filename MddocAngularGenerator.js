@@ -24,7 +24,7 @@ var overrideDir;
 
 gulp.task('project.js', function() {
 
-    return gulp.src(overrideDir.js + '/**/*.js')
+    return gulp.src(overrideDir.js + '/**/*.js', {cwd: __dirname})
 //        .pipe(log())
         .pipe(concat('project.js'))
 //        .pipe(uglify())
@@ -33,7 +33,7 @@ gulp.task('project.js', function() {
 
 
 gulp.task('main.js', function() {
-    return gulp.src('./public/js/**/*.js')
+    return gulp.src('./public/js/**/*.js', {cwd: __dirname})
         .pipe(concat('main.js'))
 //        .pipe(uglify())
         .pipe(gulp.dest(dest + '/js/'));
@@ -42,9 +42,9 @@ gulp.task('main.js', function() {
 
 gulp.task('vendor-js-files', function() {
     var files = merge(
-        gulp.src(mainBowerFiles(),{base: './bower_components'})
+        gulp.src(mainBowerFiles({paths: __dirname}),{cwd: __dirname})
             .pipe(filter('**/*.js')),
-        gulp.src('./public/vendor/**/*.js')
+        gulp.src('./public/vendor/**/*.js', {cwd: __dirname})
     );
 
     return files
@@ -56,12 +56,11 @@ gulp.task('vendor-js-files', function() {
 });
 
 gulp.task('vendor-css-files', function() {
-
     var files = merge(
-            gulp.src('./public/vendor/**/*.css'),
+            gulp.src('./public/**/*.css', {cwd: __dirname}),
             // TODO: maybe create another task
-            gulp.src(overrideDir.css + '/**/*.css'),
-            gulp.src(mainBowerFiles(),{base: './bower_components'})
+            gulp.src(overrideDir.css + '/**/*.css', {cwd: __dirname}),
+            gulp.src(mainBowerFiles({paths: __dirname}),{cwd: __dirname})
                 .pipe(filter('**/*.css'))
 
     );
@@ -76,7 +75,7 @@ gulp.task('vendor-css-files', function() {
 });
 
 gulp.task('theme-css', function() {
-    return gulp.src('./themes/sticky-footer-navbar.css')
+    return gulp.src('./themes/sticky-footer-navbar.css', {cwd: __dirname})
         .pipe(concat('theme.css'))
         .pipe(prefix('last 2 version'))
         .pipe(gulp.dest(dest + '/css/'));
@@ -87,8 +86,8 @@ gulp.task('theme-css', function() {
 
 gulp.task('compile', function() {
     var files = merge(
-        gulp.src('./public/**/*.tpl'),
-        gulp.src(overrideDir.tpl + '/**/*.tpl')
+        gulp.src('./public/**/*.tpl', {cwd: __dirname}),
+        gulp.src(overrideDir.tpl + '/**/*.tpl', {cwd: __dirname})
 
     );
     return files
@@ -108,7 +107,10 @@ function getAbsolutePath(dir) {
 
 var MddocAngularGenerator = function (metadata, settings) {
     this.settings = settings;
+
+    // TODO: if dest is not absolute add __dirname as the relative path
     dest = this.settings.outputDir;
+
     // mhmh no me gusta el cableo de nombre
     generatorSettings = this.settings.generators['mddoc-angular-generator'];
 
@@ -125,18 +127,15 @@ var MddocAngularGenerator = function (metadata, settings) {
         css: defaultOverrideDir,
         tpl: defaultOverrideDir
     };
-    renderer = ECT({ root : 'public/' });
+    renderer = ECT({ root : __dirname + '/public/' });
 };
 
 MddocAngularGenerator.prototype.generate = function (h) {
     helper = h;
     helper.settings = generatorSettings;
     return when.promise(function(resolve, reject) {
-        var dir = process.cwd();
-        process.chdir(__dirname);
         console.log('generating the mddoc angular');
         gulp.start('compile','main.js','vendor-js-files', 'vendor-css-files','project.js','theme-css', function(err) {
-            process.chdir(dir);
             if (err) {
                 return reject(err);
             }

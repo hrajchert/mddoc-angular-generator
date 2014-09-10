@@ -3,8 +3,8 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="/css/main.css" rel="stylesheet">
-        <link href="/css/theme.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+        <link href="css/theme.css" rel="stylesheet">
 
         <% if @documentor.settings.styles: %>
             <% for style in @documentor.settings.styles: %>
@@ -63,17 +63,17 @@
             <p class="text-muted">Documentation created using <a href="https://github.com/hrajchert/mddoc">mddoc</a> with the <a href="https://github.com/hrajchert/mddoc-angular-generator">angular generator</a>.</p>
         </div>
     </div>
-        <script src="/js/vendor/lib.js"></script>
+        <script src="js/vendor/lib.js"></script>
         <% if @documentor.settings.scripts: %>
             <% for script in @documentor.settings.scripts: %>
                 <script src="<%- script %>"></script>
             <% end %>
         <% end %>
-        <script src="/js/project.js"></script>
+        <script src="js/project.js"></script>
         <script>
             angular.module('main',<%- JSON.stringify @documentor.settings.modules %>);
         </script>
-        <script src="/js/main.js"></script>
+        <script src="js/main.js"></script>
 
 
 
