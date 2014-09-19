@@ -6,8 +6,8 @@
         <link href="css/main.css" rel="stylesheet">
         <link href="css/theme.css" rel="stylesheet">
 
-        <% if @documentor.settings.styles: %>
-            <% for style in @documentor.settings.styles: %>
+        <% if @mddoc.settings.styles: %>
+            <% for style in @mddoc.settings.styles: %>
                 <link href="<%- style %>" rel="stylesheet">
             <% end %>
         <% end %>
@@ -25,11 +25,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><%- @documentor.settings.title %></a>
+                <a class="navbar-brand" href="#"><%- @mddoc.settings.title %></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <% for menuItem in @documentor.settings.menu: %>
+                    <% for menuItem in @mddoc.settings.menu: %>
                         <% if menuItem.menu?: %>
                             <li ng-class="{ active: isChild('<%- menuItem.link %>')}" dropdown >
                                 <a href="#" class="dropdown-toggle"><%- menuItem.name %> <span class="caret"></span></a>
@@ -63,17 +63,14 @@
             <p class="text-muted">Documentation created using <a href="https://github.com/hrajchert/mddoc">mddoc</a> with the <a href="https://github.com/hrajchert/mddoc-angular-generator">angular generator</a>.</p>
         </div>
     </div>
-        <script src="js/vendor/lib.js"></script>
-        <% if @documentor.settings.scripts: %>
-            <% for script in @documentor.settings.scripts: %>
+        <script src="js/vendor/angular-generator-lib.js"></script>
+        <script src="js/main.js"></script>
+        <% if @mddoc.settings.scripts: %>
+            <% for script in @mddoc.settings.scripts: %>
                 <script src="<%- script %>"></script>
             <% end %>
         <% end %>
         <script src="js/project.js"></script>
-        <script>
-            angular.module('main',<%- JSON.stringify @documentor.settings.modules %>);
-        </script>
-        <script src="js/main.js"></script>
 
 
 
